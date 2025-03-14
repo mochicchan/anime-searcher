@@ -1,5 +1,5 @@
 import "./App.css";
-import { KitsuSearch } from "./components/KitsuSearch/KitsuSearch";
+import { KitsuSearch } from "./components";
 
 function App() {
   return (
