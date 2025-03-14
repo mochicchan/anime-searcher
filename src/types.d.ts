@@ -39,3 +39,39 @@ type KitsuError = {
     };
   }[];
 };
+
+interface AnilistSearchResults {
+  data: {
+    Page: AnilistMedia;
+  }
+}
+
+interface AnilistMedia {
+  media: AnilistAnime[];
+}
+
+interface AnilistAnime {
+  id: number;
+  title: {
+    romaji: string;
+  }
+  format: string;
+  description: string;
+  coverImage: {
+    large: string;
+  }
+}
+
+interface AnilistError {
+  errors: {
+    message: string;
+    status: number;
+    locations: {
+      line: number;
+      column: number;
+    }[]
+  }[]
+  data: null;
+}
+
+type Status = "loading" | "fulfilled" | "errored" | undefined
