@@ -1,6 +1,8 @@
 import { useState } from "react";
 import style from "./AnilistSearch.module.css";
 import { useFetch } from "../../hooks/useFetch";
+import { SearchBar } from "../SearchBar";
+import { SearchResults } from "../SearchResults";
 
 export default function AnilistSearch() {
   const [search, setSearch] = useState("");
@@ -8,20 +10,18 @@ export default function AnilistSearch() {
 
   return (
     <>
-      <input onChange={(e) => setSearch(e.currentTarget.value)} />
+      <SearchBar setSearch={setSearch} />
       {status === "fulfilled" &&
         data?.map(({ title, id, description, coverImage, format }) => {
           return (
-            <>
-              <a href={`https://anilist.co/anime/${id}`}>
-                <div>
-                  <p>{title.romaji}</p>
-                  <p>{format}</p>
-                  <p>{description}</p>
-                  <img src={coverImage.large} />
-                </div>
-              </a>
-            </>
+            <SearchResults
+              service={"anilist"}
+              title={title.romaji}
+              id={id}
+              format={format}
+              description={description}
+              image={coverImage.large}
+            />
           );
         })}
       {status === "loading" && (
