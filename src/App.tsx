@@ -1,10 +1,19 @@
+import { NavLink } from "react-router";
 import "./App.css";
-import { KitsuSearch } from "./components";
+import { ReactNode } from "react";
 
-function App() {
+function App({ children }: { children?: ReactNode }) {
   return (
     <>
-      <KitsuSearch />
+      <nav>
+        <NavLink to="/kitsu" end>
+          Kitsu
+        </NavLink>
+        <NavLink to="/anilist" end>
+          AniList
+        </NavLink>
+      </nav>
+      {children}
     </>
   );
 }
