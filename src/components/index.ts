@@ -1,0 +1,1 @@
+export { KitsuSearch } from './KitsuSearch'
