@@ -10,30 +10,32 @@ export default function AnilistSearch() {
 
   return (
     <>
-      <SearchBar setSearch={setSearch} />
-      {status === "fulfilled" &&
-        data?.map(({ title, id, description, coverImage, format }) => {
-          return (
-            <SearchResults
-              service={"anilist"}
-              title={title.romaji}
-              id={id}
-              format={format}
-              description={description}
-              image={coverImage.large}
-            />
-          );
-        })}
-      {status === "loading" && (
-        <>
-          <p>Loading...</p>
-        </>
-      )}
-      {status === "errored" && (
-        <>
-          <p>Error: {error}</p>
-        </>
-      )}
+      <div className={style.AnilistStyle}>
+        <SearchBar setSearch={setSearch} />
+        {status === "fulfilled" &&
+          data?.map(({ title, id, description, coverImage, format }) => {
+            return (
+              <SearchResults
+                service={"anilist"}
+                title={title.romaji}
+                id={id}
+                format={format}
+                description={description}
+                image={coverImage.large}
+              />
+            );
+          })}
+        {status === "loading" && (
+          <>
+            <p>Loading...</p>
+          </>
+        )}
+        {status === "errored" && (
+          <>
+            <p>Error: {error}</p>
+          </>
+        )}
+      </div>
     </>
   );
 }

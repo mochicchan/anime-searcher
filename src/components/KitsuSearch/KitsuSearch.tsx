@@ -3,6 +3,9 @@
 
 import { useEffect, useState } from "react";
 import style from "./KitsuSearch.module.css";
+import { SearchResults } from "../SearchResults";
+import { SearchBar } from "../SearchBar";
+import { variables } from "../../constants";
 
 /**
  * Kitsu GraphQL query string
@@ -28,18 +31,6 @@ query($title: String!) {
     }
   }
 }`;
-
-/**
- * Constructs the variables for the GraphQL query
- * @param {string} title search query for anime
- * @return {Record<title: string>} the variables for the GraphQL query
- *
- * @example
- * variables("frieren");
- */
-const variables = (title: string) => {
-  return { title };
-};
 
 export default function KitsuSearch() {
   const [search, setSearch] = useState("");
@@ -94,40 +85,32 @@ export default function KitsuSearch() {
 
   return (
     <>
-      <input
-        className={style.KitsuSearch}
-        onChange={(e) => {
-          setSearch(e.currentTarget.value);
-        }}
-      />
-      {state === "fulfilled" &&
-        data?.map(({ titles, id, description, posterImage, subtype }) => {
-          return (
-            <>
-              <a href={`https://kitsu.app/anime/${id}`}>
-                <div className={style.Results}>
-                  <p className={style.ResultsTitle}>{titles.canonical}</p>
-                  <p className={style.ResultsSubtype}>{subtype}</p>
-                  <p className={style.ResultsDescription}>{description.en}</p>
-                  <img
-                    className={style.ResultsImg}
-                    src={posterImage.original.url}
-                  />
-                </div>
-              </a>
-            </>
-          );
-        })}
-      {state === "loading" && (
-        <>
-          <p>Loading...</p>
-        </>
-      )}
-      {state === "errored" && (
-        <>
-          <p>Error: {error}</p>
-        </>
-      )}
+      <div className={style.KitsuStyle}>
+        <SearchBar setSearch={setSearch} />
+        {state === "fulfilled" &&
+          data?.map(({ titles, id, description, posterImage, subtype }) => {
+            return (
+              <SearchResults
+                service={"kitsu"}
+                title={titles.canonical}
+                id={id}
+                description={description.en}
+                image={posterImage.original.url}
+                format={subtype}
+              />
+            );
+          })}
+        {state === "loading" && (
+          <>
+            <p>Loading...</p>
+          </>
+        )}
+        {state === "errored" && (
+          <>
+            <p>Error: {error}</p>
+          </>
+        )}
+      </div>
     </>
   );
 }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import style from "./SearchBar.module.css";
 
 export default function SearchBar({
   setSearch,
@@ -8,6 +9,7 @@ export default function SearchBar({
   return (
     <>
       <input
+        className={style.SearchBar}
         onChange={(e) => setSearch(e.currentTarget.value)}
         placeholder="Search Anime..."
       />

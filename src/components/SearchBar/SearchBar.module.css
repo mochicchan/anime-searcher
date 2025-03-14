@@ -1,0 +1,8 @@
+.SearchBar {
+  width: 600px;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid color-mix(in hsl, var(--searchbar-bkg-clr), white 10%);
+  font-size: 16px;
+  background-color: var(--searchbar-bkg-clr);
+}

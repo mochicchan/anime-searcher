@@ -1,0 +1,57 @@
+.Results {
+  max-width: 600px;
+  height: 140px;
+  display: grid;
+  background-color: var(--results-bkg-clr);
+  margin-top: 15px;
+  grid-template-columns: 100px 1fr 50px;
+  grid-template-rows: 40px 1fr;
+  grid-template-areas:
+    "img title format"
+    "img description .";
+  gap: 0px 10px;
+
+  & > .ResultsTitle {
+    grid-area: title;
+    justify-self: start;
+    color: white;
+  }
+
+  & > .ResultsFormat {
+    grid-area: format;
+    align-self: center;
+    justify-self: end;
+    text-align: end;
+    color: white;
+    width: fit-content;
+    margin: 5px;
+    padding: 3px;
+    background-color: var(--format-bkg-clr);
+    border-radius: 5px;
+    text-transform: lowercase;
+
+    & a {
+      color: white;
+    }
+  }
+
+  & > .ResultsDescription {
+    grid-area: description;
+    align-self: start;
+    justify-self: start;
+    text-align: justify;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    box-orient: vertical;
+    overflow: hidden;
+    color: #a9a6a2;
+  }
+
+  & > .ResultsImg {
+    grid-area: img;
+    width: auto;
+    height: 100%;
+  }
+}

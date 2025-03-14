@@ -1,0 +1,6 @@
+:root:has(.AnilistStyle) {
+  --background-clr: #11161d;
+  --searchbar-bkg-clr: #152232;
+  --results-bkg-clr: #151f2e;
+  --format-bkg-clr: #555555;
+}

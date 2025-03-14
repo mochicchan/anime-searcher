@@ -1,3 +1,5 @@
+import style from "./SearchResults.module.css";
+
 export default function SearchResults({
   title,
   id,
@@ -23,11 +25,11 @@ export default function SearchResults({
   return (
     <>
       <a href={`${url}/${id}`}>
-        <div>
-          <p>{title}</p>
-          <p>{format}</p>
-          <p>{description}</p>
-          <img src={image} />
+        <div className={style.Results}>
+          <p className={style.ResultsTitle}>{title}</p>
+          <p className={style.ResultsFormat}>{format}</p>
+          <p className={style.ResultsDescription}>{description}</p>
+          <img className={style.ResultsImg} src={image} />
         </div>
       </a>
     </>
