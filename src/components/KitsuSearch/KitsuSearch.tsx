@@ -87,12 +87,17 @@ export default function KitsuSearch() {
       {data?.map(({ titles, id, description, posterImage, subtype }) => {
         return (
           <>
-            <div className={style.Results}>
-              <p>{titles.canonical}</p>
-              <p>{subtype}</p>
-              <p>{description.en}</p>
-              <img src={posterImage.original.url} />
-            </div>
+            <a href={`https://kitsu.app/anime/${id}`}>
+              <div className={style.Results}>
+                <p className={style.ResultsTitle}>{titles.canonical}</p>
+                <p className={style.ResultsSubtype}>{subtype}</p>
+                <p className={style.ResultsDescription}>{description.en}</p>
+                <img
+                  className={style.ResultsImg}
+                  src={posterImage.original.url}
+                />
+              </div>
+            </a>
           </>
         );
       })}
@@ -120,16 +125,6 @@ Future:
     - add hardlinking (import {x} from 'components')
 - make AniList and Kitsu search look unique (grab colours from websites)
   - make colour themes
-*/
-
-/*
-Display results:
-- display grid
-- grid-template-columns/rows
-- grid area
-- gap
-
-image width/height 100%
 */
 
 /*
