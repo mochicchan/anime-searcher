@@ -17,9 +17,9 @@ export default function SearchResults({
 }) {
   const url =
     service === "anilist"
-      ? `"https://anilist.co/anime"`
+      ? "https://anilist.co/anime"
       : service === "kitsu"
-      ? `"https://kitsu.app/anime"`
+      ? "https://kitsu.app/anime"
       : undefined;
 
   return (
