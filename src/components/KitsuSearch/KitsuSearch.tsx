@@ -1,3 +1,6 @@
+/* eslint-disable max-lines */
+/* eslint-disable max-lines-per-function */
+
 import { useEffect, useState } from "react";
 import style from "./KitsuSearch.module.css";
 
@@ -128,30 +131,3 @@ export default function KitsuSearch() {
     </>
   );
 }
-
-/*
-Tomorrow:
-
-
-Future:
-- make a homepage
-- routing between Kitsu and AniList search
-- make an AniList search
-  - document your code
-    - learn JSDoc
-  - split stuff up into components, functions, and hooks
-    - enforce functions are short
-      - "max-lines-per-function": ["error", 20]
-      - "max-lines": ["error", 30]
-    - add hardlinking (import {x} from 'components')
-- make AniList and Kitsu search look unique (grab colours from websites)
-  - make colour themes
-- display more detailed errors
-*/
-
-/*
-Colour themes:
-- CSS variables
-- :has()
-- color-mix()
-*/
