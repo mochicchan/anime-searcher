@@ -24,6 +24,7 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
       "no-unused-vars": ["warn"],
+      "@typescript/no-unused-vars": ["warn"],
       "max-lines-per-function": ["warn", 50],
       "max-lines": ["warn", 80]
     },

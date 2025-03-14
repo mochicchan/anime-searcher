@@ -4,6 +4,8 @@ import { SearchResults } from "../SearchResults";
 import { SearchBar } from "../SearchBar";
 import { kitsuQuery, kitsuUrl, variables } from "../../constants";
 import { useFetch } from "../../hooks/useFetch";
+import { SearchLoading } from "../SearchLoading";
+import { SearchError } from "../SearchError";
 
 export default function KitsuSearch() {
   const [search, setSearch] = useState("");
@@ -32,16 +34,8 @@ export default function KitsuSearch() {
               />
             );
           })}
-        {status === "loading" && (
-          <>
-            <p>Loading...</p>
-          </>
-        )}
-        {status === "errored" && (
-          <>
-            <p>Error: {error}</p>
-          </>
-        )}
+        {status === "loading" && <SearchLoading />}
+        {status === "errored" && <SearchError error={error} />}
       </div>
     </>
   );

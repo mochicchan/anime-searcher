@@ -4,6 +4,9 @@ import { useFetch } from "../../hooks/useFetch";
 import { SearchBar } from "../SearchBar";
 import { SearchResults } from "../SearchResults";
 import { anilistQuery, anilistUrl } from "../../constants";
+import { SearchLoading } from "../SearchLoading";
+import yui from "../../assets/yuishrug.png";
+import { SearchError } from "../SearchError";
 
 export default function AnilistSearch() {
   const [search, setSearch] = useState("");
@@ -32,16 +35,8 @@ export default function AnilistSearch() {
               />
             );
           })}
-        {status === "loading" && (
-          <>
-            <p>Loading...</p>
-          </>
-        )}
-        {status === "errored" && (
-          <>
-            <p>Error: {error}</p>
-          </>
-        )}
+        {status === "loading" && <SearchLoading />}
+        {status === "errored" && <SearchError error={error} />}
       </div>
     </>
   );
