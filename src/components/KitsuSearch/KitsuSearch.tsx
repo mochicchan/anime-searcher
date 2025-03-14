@@ -41,6 +41,8 @@ const variables = (title: string) => {
 export default function KitsuSearch() {
   const [search, setSearch] = useState("");
   const [data, setData] = useState<KitsuAnime[] | null>(null);
+  const [state, setState] = useState<"loading" | "errored" | "fulfilled">();
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (!search) {
@@ -49,6 +51,7 @@ export default function KitsuSearch() {
     }
 
     const timeout = setTimeout(() => {
+      setState("loading");
       const res = fetch("https://kitsu.app/api/graphql", {
         method: "POST",
         headers: {
@@ -65,9 +68,19 @@ export default function KitsuSearch() {
         if (data.status !== 200)
           throw new Error(`${data.status}: ${data.statusText}`);
 
-        data.json().then((data: KitsuSearchResults) => {
-          setData(data.data.searchAnimeByTitle.nodes);
-        });
+        data
+          .json()
+          .then((data: KitsuSearchResults | KitsuError) => {
+            if ((data as KitsuError).errors)
+              throw new Error(`${(data as KitsuError).errors[0].message}`);
+
+            setData((data as KitsuSearchResults).data.searchAnimeByTitle.nodes);
+            setState("fulfilled");
+          })
+          .catch((err: Error) => {
+            setError(err.message);
+            setState("errored");
+          });
       });
     }, 800);
 
@@ -84,33 +97,41 @@ export default function KitsuSearch() {
           setSearch(e.currentTarget.value);
         }}
       />
-      {data?.map(({ titles, id, description, posterImage, subtype }) => {
-        return (
-          <>
-            <a href={`https://kitsu.app/anime/${id}`}>
-              <div className={style.Results}>
-                <p className={style.ResultsTitle}>{titles.canonical}</p>
-                <p className={style.ResultsSubtype}>{subtype}</p>
-                <p className={style.ResultsDescription}>{description.en}</p>
-                <img
-                  className={style.ResultsImg}
-                  src={posterImage.original.url}
-                />
-              </div>
-            </a>
-          </>
-        );
-      })}
+      {state === "fulfilled" &&
+        data?.map(({ titles, id, description, posterImage, subtype }) => {
+          return (
+            <>
+              <a href={`https://kitsu.app/anime/${id}`}>
+                <div className={style.Results}>
+                  <p className={style.ResultsTitle}>{titles.canonical}</p>
+                  <p className={style.ResultsSubtype}>{subtype}</p>
+                  <p className={style.ResultsDescription}>{description.en}</p>
+                  <img
+                    className={style.ResultsImg}
+                    src={posterImage.original.url}
+                  />
+                </div>
+              </a>
+            </>
+          );
+        })}
+      {state === "loading" && (
+        <>
+          <p>Loading...</p>
+        </>
+      )}
+      {state === "errored" && (
+        <>
+          <p>Error: {error}</p>
+        </>
+      )}
     </>
   );
 }
 
 /*
 Tomorrow:
-- display all information about the results
-  - make anime a link
-- show a loading indicator when loading (state)
-- handle potential errors
+
 
 Future:
 - make a homepage
@@ -125,6 +146,7 @@ Future:
     - add hardlinking (import {x} from 'components')
 - make AniList and Kitsu search look unique (grab colours from websites)
   - make colour themes
+- display more detailed errors
 */
 
 /*
