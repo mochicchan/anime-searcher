@@ -1,94 +1,26 @@
-/* eslint-disable max-lines */
-/* eslint-disable max-lines-per-function */
-
 import { useEffect, useState } from "react";
 import style from "./KitsuSearch.module.css";
 import { SearchResults } from "../SearchResults";
 import { SearchBar } from "../SearchBar";
-import { variables } from "../../constants";
-
-/**
- * Kitsu GraphQL query string
- * @constant
- *      @type {string}
- *      @default
- */
-const query = `
-query($title: String!) {
-  searchAnimeByTitle(first:10, title: $title) {
-    nodes {
-      titles {
-        canonical
-      }
-      id
-      subtype
-      description
-      posterImage {
-        original {
-          url
-        }
-      }
-    }
-  }
-}`;
+import { kitsuQuery, kitsuUrl, variables } from "../../constants";
+import { useFetch } from "../../hooks/useFetch";
 
 export default function KitsuSearch() {
   const [search, setSearch] = useState("");
-  const [data, setData] = useState<KitsuAnime[] | null>(null);
-  const [state, setState] = useState<"loading" | "errored" | "fulfilled">();
-  const [error, setError] = useState("");
+  const [data, status, error] = useFetch<KitsuSearchResults>(
+    search,
+    kitsuUrl,
+    kitsuQuery
+  );
 
-  useEffect(() => {
-    if (!search) {
-      setData(null);
-      return;
-    }
-
-    const timeout = setTimeout(() => {
-      setState("loading");
-      const res = fetch("https://kitsu.app/api/graphql", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          query,
-          variables: variables(search),
-        }),
-      });
-
-      res.then((data) => {
-        if (data.status !== 200)
-          throw new Error(`${data.status}: ${data.statusText}`);
-
-        data
-          .json()
-          .then((data: KitsuSearchResults | KitsuError) => {
-            if ((data as KitsuError).errors)
-              throw new Error(`${(data as KitsuError).errors[0].message}`);
-
-            setData((data as KitsuSearchResults).data.searchAnimeByTitle.nodes);
-            setState("fulfilled");
-          })
-          .catch((err: Error) => {
-            setError(err.message);
-            setState("errored");
-          });
-      });
-    }, 800);
-
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [search]);
+  const anime = data?.searchAnimeByTitle.nodes;
 
   return (
     <>
       <div className={style.KitsuStyle}>
         <SearchBar setSearch={setSearch} />
-        {state === "fulfilled" &&
-          data?.map(({ titles, id, description, posterImage, subtype }) => {
+        {status === "fulfilled" &&
+          anime?.map(({ titles, id, description, posterImage, subtype }) => {
             return (
               <SearchResults
                 service={"kitsu"}
@@ -100,12 +32,12 @@ export default function KitsuSearch() {
               />
             );
           })}
-        {state === "loading" && (
+        {status === "loading" && (
           <>
             <p>Loading...</p>
           </>
         )}
-        {state === "errored" && (
+        {status === "errored" && (
           <>
             <p>Error: {error}</p>
           </>

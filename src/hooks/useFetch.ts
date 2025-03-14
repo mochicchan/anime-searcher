@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react"
-import { anilistQuery, variables } from "../constants";
+import { variables } from "../constants";
 
-export const useFetch = (search: string): [AnilistAnime[] | null, Status, string] => {
-    const [data, setData] = useState<AnilistAnime[] | null>(null);
+type BasicError = {
+    errors: { message: string }[];
+}
+
+export const useFetch = <T extends AnilistSearchResults | KitsuSearchResults>(search: string, url: string, query: string): [ T['data'] | null, Status, string] => {
+    const [data, setData] = useState<T['data'] | null>(null);
     const [status, setStatus] = useState<Status>();
     const [error, setError] = useState('')
 
@@ -14,14 +18,14 @@ export const useFetch = (search: string): [AnilistAnime[] | null, Status, string
         
         const timeout = setTimeout(() => {
         setStatus("loading")
-        const res = fetch("https://graphql.anilist.co", {
+        const res = fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
             },
             body: JSON.stringify({
-                query: anilistQuery,
+                query,
                 variables: variables(search)
             })
         })
@@ -30,11 +34,13 @@ export const useFetch = (search: string): [AnilistAnime[] | null, Status, string
             if (data.status !== 200)
                 throw new Error(`${data.status}: ${data.statusText}`);
 
-            data.json().then((data: AnilistSearchResults | AnilistError) => {
-                if ((data as AnilistError).errors)
-                    throw new Error(`${(data as AnilistError).errors[0].message}`);
+            data.json().then((data: T | BasicError) => {
+                if ((data as BasicError).errors) {
+                    throw new Error(`${(data as BasicError).errors[0].message}`);
+                }
 
-                setData((data as AnilistSearchResults).data.Page.media);
+                setData((data as T).data);
+
                 setStatus("fulfilled")
             }).catch((err: Error) => {
                 setError(err.message)
