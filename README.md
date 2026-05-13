@@ -1,54 +1,29 @@
-# React + TypeScript + Vite
+# Simple Anime Searcher
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Simple anime searcher that supports AniList and Kitsu, built using React, React Router, and Vite. Simply choose the desired service, write the name of the anime on the search bar and the results will be shown shortly after. The app is themed based on which service you search on.
 
-Currently, two official plugins are available:
+Wrote this project to learn React, state management, and routing.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<table>
+<tr>
+	<td>Homepage
+	<td>Search on Kitsu
+  <td>Search on Anilist
+<tr>
+	<td><img src="https://github.com/user-attachments/assets/134fd57d-f23e-42f3-8267-9a64daff530d" alt="home page" />
+	<td><img src="https://github.com/user-attachments/assets/0e70fab6-dcbc-40be-bd1e-5627ea4a72d7" alt="results when choosing Kitsu" />
+  <td><img src="https://github.com/user-attachments/assets/9b7fd906-b8a3-4bab-a5ee-e0e61cb10bd1" alt="results when choosing AniList"/>
+</table>
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+To install packages run
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
 ```
+npm i
+```
+To run the project run
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```
+npm start
 ```
